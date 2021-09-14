@@ -8,8 +8,8 @@ mkdir $DIR -p
 touch .bak/$FILE_EXCLUDE
 touch .removed//$FILE_EXCLUDE
 touch node_modules/$FILE_EXCLUDE
-touch packages/app-lib/node_modules/$FILE_EXCLUDE
-touch packages/app/node_modules/$FILE_EXCLUDE
+touch app-lib/node_modules/$FILE_EXCLUDE
+touch app/node_modules/$FILE_EXCLUDE
 
 tar -zcvf $FILE \
 	--exclude-tag-all=$FILE_EXCLUDE \

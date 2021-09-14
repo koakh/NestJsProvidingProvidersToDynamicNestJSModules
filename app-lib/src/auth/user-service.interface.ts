@@ -9,7 +9,9 @@ export interface User {
 }
 
 export interface UserService {
-  find: (id: string) => User;
-  findUsername: (username: string) => User;
   insert: (user: Omit<User, 'id' | 'roles'>) => Promise<User>;
+  find: (id: string) => User;
+  findByUsername: (username: string) => User;
+  findAll: (skip?: number, take?: number) => User[];
+  delete: (id: string) => void;
 }

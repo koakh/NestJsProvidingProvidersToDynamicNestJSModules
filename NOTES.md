@@ -25,6 +25,7 @@ $ git commit -am "first commit"
 # clean up files
 $ rm app-lib/src/app.*
 $ rm app-lib/src/main.ts
+app.controller.ts
 
 # create AuthModule
 $ nest g mo app-lib/src/Auth
@@ -257,7 +258,7 @@ $ code .env
 `app/.env`
 
 ```conf
-AUTH_SECRET_VALUE=supersecretpassword
+AUTH_SECRET_VALUE="supersecretpassword"
 ```
 
 ### Generate UserModule and UserService
@@ -269,6 +270,11 @@ $ nest g mo User
 $ nest g s User
 # generate UserController
 $ nest g co User
+
+# remove AppService
+$ rm app/src/app.service.ts
+# remove AppController
+$ rm app/src/app.controller.ts
 ```
 
 ### InMemoryUserStore

@@ -1,3 +1,8 @@
 Todo:
   ☐ delete getHello / app.controller
-  
+
+
+  npm run start:dev in both windows
+
+
+  update user sent props only

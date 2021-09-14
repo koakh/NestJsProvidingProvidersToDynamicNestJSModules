@@ -16,10 +16,8 @@ export class UserService implements UserServiceInterface {
   };
 
   findByUsername(username: string): User {
-    return this.users.find((e: User) => username === e.username);
+    return this.users.find((e: User) => username === e.username, false);
   };
-
-  findUsername: (username: string) => User;  
 
   findAll(skip?: number, take?: number): User[] {
     return this.users.findAll(skip, take);

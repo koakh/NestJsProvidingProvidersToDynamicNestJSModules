@@ -1,6 +1,5 @@
 import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
-
 import { AUTH_SECRET, USER_SERVICE } from './auth.constants';
 import { UserService } from './user-service.interface';
 import { comparePassword, createJWT } from './util/authentication';
@@ -13,11 +12,11 @@ export class AuthService {
   ) { }
 
   async signIn(username: string, password: string): Promise<string> {
-    const existing = this.userService.findUsername(username);
+    const existing = this.userService.findByUsername(username);
     if (!existing) {
       throw new UnauthorizedException();
     }
-    const valid = comparePassword(password, existing.password);
+    const valid = await comparePassword(password, existing.password);
     if (!valid) {
       throw new UnauthorizedException();
     }

@@ -1,10 +1,10 @@
-import { ConflictException, HttpStatus, NotFoundException } from "@nestjs/common";
-import { User, hashPassword } from 'app-lib';
-import { UserRole } from "app-lib/dist/auth/enums";
+import { ConflictException, NotFoundException } from "@nestjs/common";
+import { hashPassword, User, UserRole } from 'app-lib';
 import { v4 as uuidv4 } from 'uuid';
 
 export class UserStore {
   private data: User[];
+
   constructor() {
     this.data = new Array<User>();
     User.forEach((e: User) => {
@@ -19,13 +19,14 @@ export class UserStore {
       throw new ConflictException('User already exists');
     }
     const newUser: User = {
-      ...user, id: uuidv4(),
+      ...user,
+      id: uuidv4(),
       password: await hashPassword(user.password),
       roles: [UserRole.RoleUser]
     };
     this.data.push(newUser);
     // return created data as double check
-    const checkUser = this.find((e: User) => newUser.id === e.id)
+    const checkUser = this.find((e: User) => newUser.id === e.id, false);
     return { ...checkUser, password: undefined };
   }
 
@@ -55,9 +56,12 @@ export class UserStore {
     return result;
   }
 
-  find(predicateFn: { (e: User): boolean }): User {
-    const user = this.data.find((e: User) => predicateFn(e))
-    return { ...user, password: undefined };
+  find(predicateFn: { (e: User): boolean }, omitPassword: boolean = true): User {
+    const user = this.data.find((e: User) => predicateFn(e));
+    if (user && omitPassword) {
+      delete user.password;
+    }
+    return user
   }
 
   delete(id: string): { id: string } {
