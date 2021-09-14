@@ -4,9 +4,11 @@ import { Module } from '@nestjs/common';
 import { AUTH_OPTIONS, AUTH_SECRET, USER_SERVICE } from './auth.constants';
 import { AuthModuleOptions } from './auth.interface';
 import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
 
 @Module({
   providers: [AuthService],
+  controllers: [AuthController],
 })
 export class AuthModule extends createConfigurableDynamicRootModule<AuthModule, AuthModuleOptions>(AUTH_OPTIONS, {
   providers: [
@@ -21,4 +23,7 @@ export class AuthModule extends createConfigurableDynamicRootModule<AuthModule, 
       useFactory: (options: AuthModuleOptions) => options.userService,
     },
   ],
-}) {}
+  controllers: [
+    AuthController
+  ]
+}) { }

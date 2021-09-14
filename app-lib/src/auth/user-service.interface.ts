@@ -1,11 +1,15 @@
+import { UserRole } from "./enums";
+
 export interface User {
-  id?: string;
+  id: string;
   password: string;
   username: string;
   email: string;
+  roles: UserRole[];
 }
 
 export interface UserService {
   find: (id: string) => User;
-  insert: (user: Exclude<User, 'id'>) => User;
+  findUsername: (username: string) => User;
+  insert: (user: Omit<User, 'id' | 'roles'>) => Promise<User>;
 }

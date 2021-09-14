@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from 'app-lib';
+import { AuthController, AuthModule, AuthService } from 'app-lib';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
+import { UserController } from './user/user.controller';
 @Module({
   imports: [
     AuthModule.forRootAsync(AuthModule, {
@@ -19,7 +20,7 @@ import { UserService } from './user/user.service';
     }),
     UserModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, UserController],
   providers: [AppService],
 })
 export class AppModule { }

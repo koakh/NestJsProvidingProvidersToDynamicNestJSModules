@@ -30,6 +30,9 @@ $ rm app-lib/src/main.ts
 $ nest g mo app-lib/src/Auth
 # create AuthService
 $ nest g s app-lib/src/Auth
+# create AuthController
+$ nest g co app-lib/src/Auth
+
 ```
 
 ## AppLib : Dynamic Module Library : Follow  Jay McDoniel awesome Post
@@ -37,12 +40,12 @@ $ nest g s app-lib/src/Auth
 - [Providing Providers to Dynamic NestJS Modules](https://dev.to/nestjs/providing-providers-to-dynamic-nestjs-modules-1i6n)
 - [nestjs/packages/modules at master · golevelup/nestjs](https://github.com/golevelup/nestjs/tree/master/packages/modules)
 
-### Dependencies
+### AppLib Dependencies
 
 ```shell
 # install dependencies
 $ cd app-lib
-$ npm i @golevelup/nestjs-modules jsonwebtoken
+$ npm i @golevelup/nestjs-modules jsonwebtoken bcrypt
 ```
 
 ### Change Package
@@ -131,14 +134,14 @@ $ code src/auth/user-service.interface.ts
 ```typescript
 export interface User {
   id: string;
-  username: string;
   password: string;
+  username: string;
   email: string;
 }
 
 export interface UserService {
   find: (id: string) => User;
-  insert: (user: Exclude<User, 'id'>) => User;
+  insert: (user: Omit<User, 'id' | 'roles'>) => User;
 }
 ```
 
@@ -236,13 +239,13 @@ leaving `npm run start:dev` in one window, open another terminal window
 $ cd app
 ```
 
-### Dependencies
+### Consumer App Dependencies
 
 ```shell
 # install local app-lib library
 $ npm i ../app-lib/
 # install third party
-$ npm i @nestjs/config
+$ npm i @nestjs/config uuid
 ```
 
 ### .env file
@@ -272,10 +275,15 @@ $ nest g co User
 
 > all users password is `12345678`
 
+```shell
+$ code src/user/user.data.ts
+```
+
 `app/src/user/user.data.ts`
 
 ```typescript
 import { NotFoundException } from "@nestjs/common";
+import { v4 as uuidv4 } from 'uuid';
 import { User } from 'app-lib';
 
 export class InMemoryUserStore {
@@ -287,10 +295,11 @@ export class InMemoryUserStore {
     })
   }
 
-  create(user: User): User {
-    this.data.push(user);
+  create(user: Omit<User, 'id' | 'roles'>): User {
+    const newUser: User = { ...user, id: uuidv4() };
+    this.data.push(newUser);
     // return created data as double check
-    return this.find((e: User) => user.id === e.id);
+    return this.find((e: User) => newUser.id === e.id);
   }
 
   update(id: string, updateData: User) {
@@ -337,16 +346,18 @@ export class InMemoryUserStore {
     return this.getPaginated(take, skip);
   }
 
+  // pass a function predicate to filter data
   filter(predicateFn: { (e: User): boolean }, skip?: number, take?: number): User[] {
+    const data: User[] = this.data.filter((e: User) => predicateFn(e));
     return (skip > 0 && take > 0)
-      ? this.data.splice(skip, take)
-      : this.data;
+      ? data.splice(skip, take)
+      : data;
   }
 }
 
+// https://www.mockaroo.com/
+// https://bcrypt-generator.com/
 const User: User[] = [{
-  ...c.adminUser,
-}, {
   id: '520c2eb5-e83b-4ef5-a343-85756bcce149',
   username: 'johndoe',
   // 12345678
@@ -355,85 +366,142 @@ const User: User[] = [{
 }, {
   id: 'fa525f32-b6b7-40b5-8d09-b638d00ded3b',
   username: 'sstert2',
-  password: 'QFYrO4E1jC',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'sstert2@ask.com',
 }, {
   id: '136c8e64-b5b2-4606-b845-f9dc26f3fb28',
   username: 'gnatte3',
-  password: 'mjjZNjHv3H',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'gnatte3@i2i.jp',
 }, {
   id: '0da9413f-ba84-4b9c-9729-37daa78de2d9',
   username: 'zespinheira4',
-  password: '5dorGXixK7',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'zespinheira4@bandcamp.com',
 }, {
   id: 'dffbd368-8ea1-484c-96e7-2aaf2595a14d',
   username: 'ejessope5',
-  password: 'fjzgiOPlT4sZ',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'ejessope5@plala.or.jp',
 }, {
   id: 'b68d77c6-2e0c-4d8b-991a-ab3154616625',
   username: 'wmewrcik6',
-  password: 'UCAZ4rst',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'wmewrcik6@elegantthemes.com',
 }, {
   id: 'e25f2e23-fb96-4e36-8d7a-527a04a6f21a',
   username: 'bpersey7',
-  password: '5j370ubKlJ4l',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'bpersey7@paypal.com',
 }, {
   id: '15566d70-2cc6-4d01-a005-1783e3333153',
   username: 'kbertholin8',
-  password: '4UUgZBMWuj',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'kbertholin8@cbc.ca',
 }, {
   id: 'd9c0ec8c-3f30-45dc-9c9e-0535855eebb7',
   username: 'aslater9',
-  password: 'GWqYPW7',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'aslater9@altervista.org',
 }, {
   id: '2ad49b88-822b-4764-ae58-54fd4f487faf',
   username: 'olarkinsa',
-  password: 'crQymDaIax',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'olarkinsa@prlog.org',
 }, {
   id: 'b4b9df50-a68d-4754-8006-fdac47bd6ff4',
   username: 'ldixieb',
-  password: 'ufm8uSNpQym',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'ldixieb@eventbrite.com',
 }, {
   id: 'f6970851-795c-4f8c-85b1-3734faebc13b',
   username: 'aludvigsenc',
-  password: 'Ba9SjsV',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'aludvigsenc@cyberchimps.com',
 }, {
   id: 'c6d10ac0-5529-41c1-865e-e01713cee884',
   username: 'probardd',
-  password: 'o982PUSpRS',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'probardd@devhub.com',
 }, {
   id: '5ea39b45-0efc-4754-8bcc-6094f5ed412f',
   username: 'cspreadburye',
-  password: 'HlAkSFev3',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'cspreadburye@xinhuanet.com',
 }, {
   id: 'f81c4c20-246a-4519-9b7c-6c685ceb66df',
   username: 'vheavensf',
-  password: 'fX4OX9t',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'vheavensf@nbcnews.com',
 }, {
   id: '7f2ed332-a7ca-4c23-84e6-d341e761c73c',
   username: 'roquing',
-  password: 'g7TUBIr',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'roquing@uiuc.edu',
 }, {
   id: '3d016ad5-a407-44ea-8eb4-f034fd1c3930',
   username: 'lculloteyh',
-  password: 'HQwX26n9D',
+  password: '$2b$10$U9AVUdkRnFsrMjPg/XyTeOWmF.gu73gd1hJGR1s1OnKTshjJYdGpW',
   email: 'lculloteyh@jimdo.com',
 }];
 ```
+
+### UserService
+
+```shell
+$ code src/user/user.service.ts
+```
+
+`app/src/user/user.service.ts`
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { User, UserService as UserServiceInterface } from 'app-lib';
+import { CreateUserDto } from './dto';
+import { InMemoryUserStore } from './user.data';
+
+@Injectable()
+export class UserService implements UserServiceInterface {
+  private users: InMemoryUserStore = new InMemoryUserStore();
+
+  find(id: string): User {
+    return this.users.find((e: User) => id === e.id);
+  };
+
+  insert(user: CreateUserDto): User {
+    return this.users.create(user);
+  }
+}
+```
+
+### UserController
+
+```shell
+$ code src/user/user.controller.ts
+```
+
+`app/src/user/user.controller.ts`
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { User, UserService as UserServiceInterface } from 'app-lib';
+import { CreateUserDto } from './dto';
+import { InMemoryUserStore } from './user.data';
+
+@Injectable()
+export class UserService implements UserServiceInterface {
+  private users: InMemoryUserStore = new InMemoryUserStore();
+
+  find(id: string): User {
+    return this.users.find((e: User) => id === e.id);
+  };
+
+  insert(user: CreateUserDto): User {
+    return this.users.create(user);
+  }
+}
+```
+
 
 ### AppModule
 

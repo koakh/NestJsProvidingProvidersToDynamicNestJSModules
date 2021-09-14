@@ -1,0 +1,42 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch via NPM",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run-script",
+        "start:debug"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "cwd": "${workspaceFolder}/app",
+      "console": "integratedTerminal",
+      "restart": true,
+      // must work with pwa-node
+      // "resolveSourceMapLocations": [
+      //   "${workspaceFolder}/app**",
+      //   "!**/node_modules/**"
+      // ],
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch Program",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/app/src/main.ts",
+      "preLaunchTask": "tsc: build - app/tsconfig.json",
+      "outFiles": [
+        "${workspaceFolder}/app/dist/**/*.js"
+      ]
+    }
+  ]
+}
