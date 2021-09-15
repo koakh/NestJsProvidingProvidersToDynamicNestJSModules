@@ -1,5 +1,27 @@
 # NOTES
 
+- [NOTES](#notes)
+  - [Create Project Structure](#create-project-structure)
+  - [Clean up and Scaffold project Paths](#clean-up-and-scaffold-project-paths)
+    - [AppLib Dependencies](#applib-dependencies)
+    - [Change Package](#change-package)
+    - [Change Scripts](#change-scripts)
+    - [AuthConstants](#authconstants)
+    - [AuthInterface | AuthModuleOptions](#authinterface--authmoduleoptions)
+    - [UserService](#userservice)
+    - [AuthModule](#authmodule)
+    - [AuthService](#authservice)
+    - [build Package](#build-package)
+  - [Consumer App](#consumer-app)
+    - [Consumer App Dependencies](#consumer-app-dependencies)
+    - [.env file](#env-file)
+    - [Generate UserModule and UserService](#generate-usermodule-and-userservice)
+    - [InMemoryUserStore](#inmemoryuserstore)
+    - [UserService](#userservice-1)
+    - [UserController](#usercontroller)
+    - [AppModule](#appmodule)
+  - [Fix Errors in Post](#fix-errors-in-post)
+
 ## Create Project Structure
 
 ```shell
@@ -25,7 +47,6 @@ $ git commit -am "first commit"
 # clean up files
 $ rm app-lib/src/app.*
 $ rm app-lib/src/main.ts
-app.controller.ts
 
 # create AuthModule
 $ nest g mo app-lib/src/Auth
@@ -33,13 +54,7 @@ $ nest g mo app-lib/src/Auth
 $ nest g s app-lib/src/Auth
 # create AuthController
 $ nest g co app-lib/src/Auth
-
 ```
-
-## AppLib : Dynamic Module Library : Follow  Jay McDoniel awesome Post
-
-- [Providing Providers to Dynamic NestJS Modules](https://dev.to/nestjs/providing-providers-to-dynamic-nestjs-modules-1i6n)
-- [nestjs/packages/modules at master · golevelup/nestjs](https://github.com/golevelup/nestjs/tree/master/packages/modules)
 
 ### AppLib Dependencies
 
