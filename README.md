@@ -16,7 +16,7 @@ to follow along please read the [NOTES.md](NOTES.md) file in the root of the rep
 
 - [Providing Providers to Dynamic NestJS Modules](https://dev.to/nestjs/providing-providers-to-dynamic-nestjs-modules-1i6n)
 
-> main Jay McDoniel awesome Tutorial
+> Main Jay McDoniel awesome Tutorial
 
 - [Advanced NestJS: How to build completely dynamic NestJS modules](https://dev.to/nestjs/advanced-nestjs-how-to-build-completely-dynamic-nestjs-modules-1370)
 
