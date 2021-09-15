@@ -4,11 +4,11 @@ a simple project to complement **Jay McDoniel awesome Tutorial** [Providing Prov
 
 > this is not a tutorial, or a post, this is only a functional working repository to follow along Jay [dev.to](https://dev.to) post, with some minimal changes and some useful notes, some info about bootstrap and create everything from scratch (consumer app and a app-lib library package) and that's all
 
-to follow along please read the [NOTES.md](NOTES.md) file in the root of the repo
-
 > this project is just focus on **Providing Providers to Dynamic NestJS Modules** and not on best practices, and other nodejs or nestjs features......
 
-if follow notes to create repo from scratch and have some issues please create a PR or let me know. thanks once again to all node and nestjs community, in this case a special thanks to **Jay McDoniel** and **John Biundo**
+to follow along please read the [NOTES.md](NOTES.md) file in the root of the repo
+
+> if follow notes to create repo from scratch and have some issues please create a PR or let me know. thanks once again to all node and nestjs community, in this case a special thanks to **Jay McDoniel** and **John Biundo**
 
 ## Links
 
