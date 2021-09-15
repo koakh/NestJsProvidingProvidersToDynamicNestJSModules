@@ -10,7 +10,6 @@ export function comparePassword(plainText: string, hash: string): Promise<boolea
       if (err) {
         return reject(err);
       }
-
       return resolve(result);
     });
   });
@@ -22,7 +21,6 @@ export function hashPassword(plainText: string): Promise<string> {
       if (err) {
         reject(err);
       }
-
       resolve(hash);
     });
   });
@@ -34,7 +32,6 @@ export function createJWT(secret: string, data: { sub: string, roles: UserRole[]
       if (err) {
         return reject(err);
       }
-
       return resolve(token as string);
     });
   });
@@ -46,9 +43,7 @@ export function decodeJWT(secret: string, token: string): Promise<{ sub: string 
       if (err) {
         reject(err);
       }
-
       const { sub } = decoded as { sub: string };
-
       resolve({ sub });
     });
   });

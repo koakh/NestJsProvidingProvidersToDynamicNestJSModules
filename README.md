@@ -2,9 +2,13 @@
 
 a simple project to complement **Jay McDoniel awesome Tutorial** [Providing Providers to Dynamic NestJS Modules](https://dev.to/nestjs/providing-providers-to-dynamic-nestjs-modules-1i6n)
 
-> this is not a tutorial, or a post, this is only a functional working repository to follow along Jay [dev.to](dev.to) post, with some minimal notes, and some info about bootstrapp and create everything from scratch (consumer app and a app-lib librart package)
+> this is not a tutorial, or a post, this is only a functional working repository to follow along Jay [dev.to](dev.to) post, with some minimal changes and some useful notes, some info about bootstrap and create everything from scratch (consumer app and a app-lib librart package) and that's all
 
 to follow along please read the [NOTES.md](NOTES.md) file in the root of the repo
+
+> this project is just focus on **Providing Providers to Dynamic NestJS Modules** and not on best practices, and other nodejs or nestjs features......
+
+if follow notes to create repo from scratch and have some issues please create a PR or let me know. thanks once again to all node and nestjs community, in this case a special thanks to **Jay McDoniel** and **John Biundo**
 
 ## Links
 
