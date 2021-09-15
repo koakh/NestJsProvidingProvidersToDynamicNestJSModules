@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { User, UserService as UserServiceInterface } from 'app-lib';
-import { CreateUserDto } from './dto';
+import { CreateUserDto, UpdateUserDto } from './dto';
 import { UserStore } from './user.store';
 
 @Injectable()
 export class UserService implements UserServiceInterface {
   private users: UserStore = new UserStore();
 
-  async insert(user: CreateUserDto): Promise<User> {
+  async create(user: CreateUserDto): Promise<User> {
     return await this.users.create(user);
   }
 
@@ -22,6 +22,10 @@ export class UserService implements UserServiceInterface {
   findAll(skip?: number, take?: number): User[] {
     return this.users.findAll(skip, take);
   };
+
+  update(id: string, user: UpdateUserDto): User {
+    return this.users.update(id, user);
+  }  
 
   delete(id: string): void {
     this.users.delete(id);

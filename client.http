@@ -18,6 +18,26 @@ Content-Type: {{contentType}}
   "password": "12345678"
 }
 
+### updateUser
+// @name updateUser
+
+PUT {{uri}}/user/{{johnDoeUserId}} HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "john@example.com",
+  "password": "87654321"
+}
+
+### deleteUser
+// @name deleteUser
+
+DELETE {{uri}}/user/{{johnDoeUserId}} HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+}
+
 ### findUser
 // @name findUser
 
@@ -38,15 +58,6 @@ Content-Type: {{contentType}}
   "take": 30
 }
 
-### deleteUser
-// @name deleteUser
-
-DELETE {{uri}}/user/{{johnDoeUserId}} HTTP/1.1
-Content-Type: {{contentType}}
-
-{
-}
-
 ### loginUser
 // @name loginUser
 
@@ -54,6 +65,10 @@ POST {{uri}}/auth/signin HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-  "username": "koakh",
-  "password": "12345671"
+  // after create user
+  // "username": "koakh",
+  // "password": "12345678"
+  // after update user
+  "username": "johndoe",
+  "password": "87654321"
 }

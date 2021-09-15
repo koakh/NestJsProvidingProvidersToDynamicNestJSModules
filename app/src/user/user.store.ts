@@ -30,17 +30,22 @@ export class UserStore {
     return { ...checkUser, password: undefined };
   }
 
-  update(id: string, updateData: User) {
+  update(id: string, updateData: Omit<User, 'id' | 'username' | 'roles'>): User {
     this.data.forEach((user: User) => {
       if (user.id === id) {
         const keys = Object.keys(updateData);
-        keys.forEach(key => {
-          if (key != 'id') {
+        keys.forEach(async (key) => {
+          if (key != 'id' && key != 'password') {
             user[key] = updateData[key];
+          }
+          if (key === 'password') {
+            user[key] = await hashPassword(updateData[key]);
           }
         });
       };
     });
+    // return updated user
+    return this.find((e: User) => id === e.id);
   };
 
   getPaginated(limit: number, offset: number): User[] {
