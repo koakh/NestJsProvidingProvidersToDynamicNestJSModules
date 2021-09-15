@@ -2,7 +2,7 @@
 
 a simple project to complement **Jay McDoniel awesome Tutorial** [Providing Providers to Dynamic NestJS Modules](https://dev.to/nestjs/providing-providers-to-dynamic-nestjs-modules-1i6n)
 
-> this is not a tutorial, or a post, this is only a functional working repository to follow along Jay [dev.to](https://dev.to) post, with some minimal changes and some useful notes, some info about bootstrap and create everything from scratch (consumer app and a app-lib librart package) and that's all
+> this is not a tutorial, or a post, this is only a functional working repository to follow along Jay [dev.to](https://dev.to) post, with some minimal changes and some useful notes, some info about bootstrap and create everything from scratch (consumer app and a app-lib library package) and that's all
 
 to follow along please read the [NOTES.md](NOTES.md) file in the root of the repo
 
