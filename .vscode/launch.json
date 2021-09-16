@@ -19,11 +19,6 @@
       "cwd": "${workspaceFolder}/app",
       "console": "integratedTerminal",
       "restart": true,
-      // must work with pwa-node
-      // "resolveSourceMapLocations": [
-      //   "${workspaceFolder}/app**",
-      //   "!**/node_modules/**"
-      // ],
     },
     {
       "type": "pwa-node",
