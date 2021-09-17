@@ -36,6 +36,7 @@
   - [Publish Package](#publish-package)
   - [Fix Errors in Post](#fix-errors-in-post)
     - [Export interface User](#export-interface-user)
+  - [How to import a registerAsync in a dynamic Nestjs module](#how-to-import-a-registerasync-in-a-dynamic-nestjs-module)
 
 ## Create Project Structure
 
@@ -1136,3 +1137,60 @@ export interface User {
   email: string;
 }
 ```
+
+## How to import a registerAsync in a dynamic Nestjs module
+
+> Note: this section are duplicated in both files
+
+sometimes we need to **import a registerAsync in a dynamic Nestjs module** like the image bellow, after fight 2 hours trying to do it, the trick is a combination of using `@Global()`, `exports: [AUTH_OPTIONS]`, and `inject: [AUTH_OPTIONS]`
+
+![image](assets/2021-09-17-16-58-32.png)
+
+```typescript
+// NOTE TRICK : import a registerAsync : use @Global()
+@Global()
+@Module({
+  // NOTE import a registerAsync : export AUTH_OPTIONS
+  exports: [AuthService, LdapService, CONFIG_SERVICE],
+  controllers: [AuthController, LdapController],
+})
+export class AuthModule extends createConfigurableDynamicRootModule<AuthModule, ModuleOptions>(AUTH_OPTIONS, {
+  imports: [
+    JwtModule.registerAsync({
+      // NOTE TRICK : import a registerAsync : inject AUTH_OPTIONS
+      inject: [CONFIG_SERVICE],
+      useFactory: async (
+        config: ModuleOptionsConfig,
+      ) => ({
+        secret: config.jwt.accessTokenJwtSecret,
+        signOptions: { expiresIn: config.jwt.accessTokenExpiresIn },
+      }),
+    }),
+  ],
+  // dynamic module injected custom providers
+  providers: [
+    AuthService, JwtStrategy, LdapStrategy, RolesStrategy, LdapService,
+    // register a global-scoped filter directly from any module
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+    {
+      inject: [AUTH_OPTIONS],
+      provide: CONSUMER_APP_SERVICE,
+      useFactory: (options: ModuleOptions) => options.consumerAppService,
+    },
+    {
+      inject: [AUTH_OPTIONS],
+      provide: CONFIG_SERVICE,
+      useFactory: (options: ModuleOptions) => options.config,
+    },
+  ],
+}) {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CookieParserMiddleware).forRoutes('/auth/refresh-token');
+  }
+}
+```
+
+> Note: cutted code version with essencials only
